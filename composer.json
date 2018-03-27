@@ -12,8 +12,8 @@
     "prefer-stable": true,
     "require": {
         "php": ">=7.0.0",
-        "diablomedia/zendframework1-log": "*",
-        "diablomedia/zendframework1-wildfire": "*"
+        "diablomedia/zendframework1-log": "^1.0.0",
+        "diablomedia/zendframework1-wildfire": "^1.0.0"
     },
     "autoload": {
         "psr-0": {
