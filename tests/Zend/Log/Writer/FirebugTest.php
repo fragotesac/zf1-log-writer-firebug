@@ -32,10 +32,10 @@
 class Zend_Log_Writer_FirebugTest extends PHPUnit\Framework\TestCase
 {
     protected $_controller = null;
-    protected $_request = null;
-    protected $_response = null;
-    protected $_writer = null;
-    protected $_logger = null;
+    protected $_request    = null;
+    protected $_response   = null;
+    protected $_writer     = null;
+    protected $_logger     = null;
 
     public function setUp()
     {
@@ -49,7 +49,7 @@ class Zend_Log_Writer_FirebugTest extends PHPUnit\Framework\TestCase
         // registered request/response objects
         Zend_Controller_Front::getInstance()->resetInstance();
 
-        $this->_request = new Zend_Log_Writer_FirebugTest_Request();
+        $this->_request  = new Zend_Log_Writer_FirebugTest_Request();
         $this->_response = new Zend_Log_Writer_FirebugTest_Response();
 
         $channel = Zend_Wildfire_Channel_HttpHeaders::getInstance();
@@ -86,7 +86,7 @@ class Zend_Log_Writer_FirebugTest extends PHPUnit\Framework\TestCase
         Zend_Wildfire_Channel_HttpHeaders::destroyInstance();
         Zend_Wildfire_Plugin_FirePhp::destroyInstance();
 
-        $log = new Zend_Log();
+        $log           = new Zend_Log();
         $writerFirebug = new Zend_Log_Writer_Firebug();
         $log->addWriter($writerFirebug);
         $log->log('hi', 2);
@@ -97,8 +97,8 @@ class Zend_Log_Writer_FirebugTest extends PHPUnit\Framework\TestCase
      */
     public function testSetFormatter()
     {
-        $firephp = Zend_Wildfire_Plugin_FirePhp::getInstance();
-        $channel = Zend_Wildfire_Channel_HttpHeaders::getInstance();
+        $firephp  = Zend_Wildfire_Plugin_FirePhp::getInstance();
+        $channel  = Zend_Wildfire_Channel_HttpHeaders::getInstance();
         $protocol = $channel->getProtocol(Zend_Wildfire_Plugin_FirePhp::PROTOCOL_URI);
 
         $this->_logger->log('Test Message 1', Zend_Log::INFO);
@@ -106,7 +106,7 @@ class Zend_Log_Writer_FirebugTest extends PHPUnit\Framework\TestCase
         $formatter = new Zend_Log_Writer_FirebugTest_Formatter();
         $this->_writer->setFormatter($formatter);
 
-        $this->_logger->setEventItem('testLabel','Test Label');
+        $this->_logger->setEventItem('testLabel', 'Test Label');
 
         $this->_logger->log('Test Message 2', Zend_Log::INFO);
 
@@ -116,15 +116,19 @@ class Zend_Log_Writer_FirebugTest extends PHPUnit\Framework\TestCase
                             [Zend_Wildfire_Plugin_FirePhp::PLUGIN_URI]
                             [0];
 
-        $this->assertEquals($message,
-                            '[{"Type":"INFO"},"Test Message 1"]');
+        $this->assertEquals(
+            $message,
+            '[{"Type":"INFO"},"Test Message 1"]'
+        );
 
         $message = $messages[Zend_Wildfire_Plugin_FirePhp::STRUCTURE_URI_FIREBUGCONSOLE]
                             [Zend_Wildfire_Plugin_FirePhp::PLUGIN_URI]
                             [1];
 
-        $this->assertEquals($message,
-                            '[{"Type":"INFO"},"Test Label : Test Message 2"]');
+        $this->assertEquals(
+            $message,
+            '[{"Type":"INFO"},"Test Label : Test Message 2"]'
+        );
     }
 
     /**
@@ -132,14 +136,14 @@ class Zend_Log_Writer_FirebugTest extends PHPUnit\Framework\TestCase
      */
     public function testEventItemLabel()
     {
-        $firephp = Zend_Wildfire_Plugin_FirePhp::getInstance();
-        $channel = Zend_Wildfire_Channel_HttpHeaders::getInstance();
+        $firephp  = Zend_Wildfire_Plugin_FirePhp::getInstance();
+        $channel  = Zend_Wildfire_Channel_HttpHeaders::getInstance();
         $protocol = $channel->getProtocol(Zend_Wildfire_Plugin_FirePhp::PROTOCOL_URI);
 
 
         $this->_logger->log('Test Message 1', Zend_Log::INFO);
 
-        $this->_logger->setEventItem('firebugLabel','Test Label');
+        $this->_logger->setEventItem('firebugLabel', 'Test Label');
 
         $this->_logger->log('Test Message 2', Zend_Log::INFO);
 
@@ -149,34 +153,52 @@ class Zend_Log_Writer_FirebugTest extends PHPUnit\Framework\TestCase
                             [Zend_Wildfire_Plugin_FirePhp::PLUGIN_URI]
                             [0];
 
-        $this->assertEquals($message,
-                            '[{"Type":"INFO"},"Test Message 1"]');
+        $this->assertEquals(
+            $message,
+            '[{"Type":"INFO"},"Test Message 1"]'
+        );
 
         $message = $messages[Zend_Wildfire_Plugin_FirePhp::STRUCTURE_URI_FIREBUGCONSOLE]
                             [Zend_Wildfire_Plugin_FirePhp::PLUGIN_URI]
                             [1];
 
-        $this->assertEquals($message,
-                            '[{"Type":"INFO","Label":"Test Label"},"Test Message 2"]');
+        $this->assertEquals(
+            $message,
+            '[{"Type":"INFO","Label":"Test Label"},"Test Message 2"]'
+        );
     }
 
     public function testLogStyling()
     {
-        $this->assertEquals($this->_writer->getDefaultPriorityStyle(),
-                            Zend_Wildfire_Plugin_FirePhp::LOG);
-        $this->assertEquals($this->_writer->setDefaultPriorityStyle(Zend_Wildfire_Plugin_FirePhp::WARN),
-                            Zend_Wildfire_Plugin_FirePhp::LOG);
-        $this->assertEquals($this->_writer->getDefaultPriorityStyle(),
-                            Zend_Wildfire_Plugin_FirePhp::WARN);
+        $this->assertEquals(
+            $this->_writer->getDefaultPriorityStyle(),
+            Zend_Wildfire_Plugin_FirePhp::LOG
+        );
+        $this->assertEquals(
+            $this->_writer->setDefaultPriorityStyle(Zend_Wildfire_Plugin_FirePhp::WARN),
+            Zend_Wildfire_Plugin_FirePhp::LOG
+        );
+        $this->assertEquals(
+            $this->_writer->getDefaultPriorityStyle(),
+            Zend_Wildfire_Plugin_FirePhp::WARN
+        );
 
-        $this->assertEquals($this->_writer->getPriorityStyle(9),
-                            false);
-        $this->assertEquals($this->_writer->setPriorityStyle(9,Zend_Wildfire_Plugin_FirePhp::WARN),
-                            true);
-        $this->assertEquals($this->_writer->getPriorityStyle(9),
-                            Zend_Wildfire_Plugin_FirePhp::WARN);
-        $this->assertEquals($this->_writer->setPriorityStyle(9,Zend_Wildfire_Plugin_FirePhp::LOG),
-                            Zend_Wildfire_Plugin_FirePhp::WARN);
+        $this->assertEquals(
+            $this->_writer->getPriorityStyle(9),
+            false
+        );
+        $this->assertEquals(
+            $this->_writer->setPriorityStyle(9, Zend_Wildfire_Plugin_FirePhp::WARN),
+            true
+        );
+        $this->assertEquals(
+            $this->_writer->getPriorityStyle(9),
+            Zend_Wildfire_Plugin_FirePhp::WARN
+        );
+        $this->assertEquals(
+            $this->_writer->setPriorityStyle(9, Zend_Wildfire_Plugin_FirePhp::LOG),
+            Zend_Wildfire_Plugin_FirePhp::WARN
+        );
     }
 
     public function testBasicLogging()
@@ -187,11 +209,11 @@ class Zend_Log_Writer_FirebugTest extends PHPUnit\Framework\TestCase
 
         Zend_Wildfire_Channel_HttpHeaders::getInstance()->flush();
 
-        $headers = array();
-        $headers['X-Wf-Protocol-1'] = 'http://meta.wildfirehq.org/Protocol/JsonStream/0.2';
+        $headers                       = array();
+        $headers['X-Wf-Protocol-1']    = 'http://meta.wildfirehq.org/Protocol/JsonStream/0.2';
         $headers['X-Wf-1-Structure-1'] = 'http://meta.firephp.org/Wildfire/Structure/FirePHP/FirebugConsole/0.1';
-        $headers['X-Wf-1-Plugin-1'] = 'http://meta.firephp.org/Wildfire/Plugin/ZendFramework/FirePHP/1.6.2';
-        $headers['X-Wf-1-1-1-1'] = '42|[{"Type":"INFO"},"This is a log message!"]|';
+        $headers['X-Wf-1-Plugin-1']    = 'http://meta.firephp.org/Wildfire/Plugin/ZendFramework/FirePHP/1.6.2';
+        $headers['X-Wf-1-1-1-1']       = '42|[{"Type":"INFO"},"This is a log message!"]|';
 
         $this->assertTrue($this->_response->verifyHeaders($headers));
     }
@@ -202,11 +224,11 @@ class Zend_Log_Writer_FirebugTest extends PHPUnit\Framework\TestCase
      */
     public function testAdvancedLogging()
     {
-        Zend_Wildfire_Plugin_FirePhp::getInstance()->setOption('maxTraceDepth',0);
+        Zend_Wildfire_Plugin_FirePhp::getInstance()->setOption('maxTraceDepth', 0);
 
         $message = 'This is a log message!';
-        $label = 'Test Label';
-        $table = array('Summary line for the table',
+        $label   = 'Test Label';
+        $table   = array('Summary line for the table',
                        array(
                            array('Column 1', 'Column 2'),
                            array('Row 1 c 1',' Row 1 c 2'),
@@ -224,9 +246,9 @@ class Zend_Log_Writer_FirebugTest extends PHPUnit\Framework\TestCase
         $this->_logger->table($table);
 
         try {
-          throw new Exception('Test Exception');
+            throw new Exception('Test Exception');
         } catch (Exception $e) {
-          $this->_logger->err($e);
+            $this->_logger->err($e);
         }
 
         try {
@@ -236,26 +258,28 @@ class Zend_Log_Writer_FirebugTest extends PHPUnit\Framework\TestCase
             // success
         }
 
-        $channel = Zend_Wildfire_Channel_HttpHeaders::getInstance();
+        $channel  = Zend_Wildfire_Channel_HttpHeaders::getInstance();
         $protocol = $channel->getProtocol(Zend_Wildfire_Plugin_FirePhp::PROTOCOL_URI);
 
-        $messages = array(Zend_Wildfire_Plugin_FirePhp::STRUCTURE_URI_FIREBUGCONSOLE=>
-                          array(Zend_Wildfire_Plugin_FirePhp::PLUGIN_URI=>
-                                array(1=>'[{"Type":"TABLE"},["Summary line for the table",[["Column 1","Column 2"],["Row 1 c 1"," Row 1 c 2"],["Row 2 c 1"," Row 2 c 2"]]]]')));
+        $messages = array(Zend_Wildfire_Plugin_FirePhp::STRUCTURE_URI_FIREBUGCONSOLE =>
+                          array(Zend_Wildfire_Plugin_FirePhp::PLUGIN_URI =>
+                                array(1 => '[{"Type":"TABLE"},["Summary line for the table",[["Column 1","Column 2"],["Row 1 c 1"," Row 1 c 2"],["Row 2 c 1"," Row 2 c 2"]]]]')));
 
         $qued_messages = $protocol->getMessages();
 
         unset($qued_messages[Zend_Wildfire_Plugin_FirePhp::STRUCTURE_URI_FIREBUGCONSOLE][Zend_Wildfire_Plugin_FirePhp::PLUGIN_URI][0]);
         unset($qued_messages[Zend_Wildfire_Plugin_FirePhp::STRUCTURE_URI_FIREBUGCONSOLE][Zend_Wildfire_Plugin_FirePhp::PLUGIN_URI][2]);
 
-        $this->assertEquals(serialize($qued_messages),
-                            serialize($messages));
+        $this->assertEquals(
+            serialize($qued_messages),
+            serialize($messages)
+        );
     }
 
     public function testFactory()
     {
         $cfg = array('log' => array('memory' => array(
-            'writerName' => "Firebug"
+            'writerName' => 'Firebug'
         )));
 
         $logger = Zend_Log::factory($cfg['log']);
@@ -268,8 +292,8 @@ class Zend_Log_Writer_FirebugTest extends PHPUnit\Framework\TestCase
      */
     public function testFileLineOffsets()
     {
-        $firephp = Zend_Wildfire_Plugin_FirePhp::getInstance();
-        $channel = Zend_Wildfire_Channel_HttpHeaders::getInstance();
+        $firephp  = Zend_Wildfire_Plugin_FirePhp::getInstance();
+        $channel  = Zend_Wildfire_Channel_HttpHeaders::getInstance();
         $protocol = $channel->getProtocol(Zend_Wildfire_Plugin_FirePhp::PROTOCOL_URI);
         $firephp->setOption('includeLineNumbers', true);
         $firephp->setOption('maxTraceDepth', 0);
@@ -278,13 +302,13 @@ class Zend_Log_Writer_FirebugTest extends PHPUnit\Framework\TestCase
         // NOTE: Do NOT separate the following pairs otherwise the line numbers will not match for the test
 
         // Message number: 1
-        $lines[] = __LINE__+1;
+        $lines[] = __LINE__ + 1;
         $this->_logger->log('Hello World', Zend_Log::INFO);
 
         // Message number: 2
         $this->_logger->addPriority('TRACE', 8);
         $this->_writer->setPriorityStyle(8, 'TRACE');
-        $lines[] = __LINE__+1;
+        $lines[] = __LINE__ + 1;
         $this->_logger->trace('Trace to here');
 
         // Message number: 3
@@ -297,21 +321,20 @@ class Zend_Log_Writer_FirebugTest extends PHPUnit\Framework\TestCase
                            array('Row 2 c 1',' Row 2 c 2')
                        )
                       );
-        $lines[] = __LINE__+1;
+        $lines[] = __LINE__ + 1;
         $this->_logger->table($table);
 
         // Message number: 4
-        $lines[] = __LINE__+1;
+        $lines[] = __LINE__ + 1;
         $this->_logger->info('Hello World');
 
         $messages = $protocol->getMessages();
         $messages = $messages[Zend_Wildfire_Plugin_FirePhp::STRUCTURE_URI_FIREBUGCONSOLE][Zend_Wildfire_Plugin_FirePhp::PLUGIN_URI];
 
-        for( $i=0 ; $i<sizeof($messages) ; $i++ ) {
-            if(!preg_match_all('/FirebugTest\.php","Line":' . $lines[$i] . '/', $messages[$i], $m)) {
-                $this->fail("File and line does not match for message number: " . ($i+1));
+        for ($i = 0 ; $i < sizeof($messages) ; $i++) {
+            if (!preg_match_all('/FirebugTest\.php","Line":' . $lines[$i] . '/', $messages[$i], $m)) {
+                $this->fail('File and line does not match for message number: ' . ($i + 1));
             }
-
         }
     }
 }
@@ -320,7 +343,7 @@ class Zend_Log_Writer_FirebugTest_Formatter extends Zend_Log_Formatter_Firebug
 {
     public function format($event)
     {
-        return $event['testLabel'].' : '.$event['message'];
+        return $event['testLabel'] . ' : ' . $event['message'];
     }
 }
 
@@ -338,7 +361,6 @@ class Zend_Log_Writer_FirebugTest_Request extends Zend_Controller_Request_Http
 
 class Zend_Log_Writer_FirebugTest_Response extends Zend_Controller_Response_Http
 {
-
     public function canSendHeaders($throw = false)
     {
         return true;
@@ -346,7 +368,6 @@ class Zend_Log_Writer_FirebugTest_Response extends Zend_Controller_Response_Http
 
     public function verifyHeaders($headers)
     {
-
         $response_headers = $this->getHeaders();
         if (!$response_headers) {
             return false;
@@ -357,7 +378,7 @@ class Zend_Log_Writer_FirebugTest_Response extends Zend_Controller_Response_Http
         $keys1 = serialize($keys1);
 
         $keys2 = array();
-        foreach ($response_headers as $header ) {
+        foreach ($response_headers as $header) {
             $keys2[] = $header['name'];
         }
         sort($keys2);
@@ -372,7 +393,7 @@ class Zend_Log_Writer_FirebugTest_Response extends Zend_Controller_Response_Http
         $values1 = serialize($values1);
 
         $values2 = array();
-        foreach ($response_headers as $header ) {
+        foreach ($response_headers as $header) {
             $values2[] = $header['value'];
         }
         sort($values2);
