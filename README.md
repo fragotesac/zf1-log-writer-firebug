@@ -1,6 +1,6 @@
 Zend Framework 1 - Log_Writer_Firebug
 ============================
-[![Build Status](https://travis-ci.org/diablomedia/zf1-log-writer-firebug.svg?branch=master)](https://travis-ci.org/diablomedia/zf1-log-writer-firebug)
+[![Build Status](https://travis-ci.com/diablomedia/zf1-log-writer-firebug.svg?branch=master)](https://travis-ci.com/diablomedia/zf1-log-writer-firebug)
 [![codecov](https://codecov.io/gh/diablomedia/zf1-log-writer-firebug/branch/master/graph/badge.svg)](https://codecov.io/gh/diablomedia/zf1-log-writer-firebug)
 [![Latest Stable Version](https://poser.pugx.org/diablomedia/zendframework1-log-writer-firebug/v/stable)](https://packagist.org/packages/diablomedia/zendframework1-log-writer-firebug)
 [![Total Downloads](https://poser.pugx.org/diablomedia/zendframework1-log-writer-firebug/downloads)](https://packagist.org/packages/diablomedia/zendframework1-log-writer-firebug)
