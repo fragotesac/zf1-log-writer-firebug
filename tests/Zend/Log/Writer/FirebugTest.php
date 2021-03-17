@@ -37,7 +37,7 @@ class Zend_Log_Writer_FirebugTest extends PHPUnit\Framework\TestCase
     protected $_writer     = null;
     protected $_logger     = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         if (PHP_OS === 'AIX') {
             $this->markTestSkipped('Cannot run on AIX');
@@ -67,7 +67,7 @@ class Zend_Log_Writer_FirebugTest extends PHPUnit\Framework\TestCase
         Zend_Wildfire_Plugin_FirePhp::getInstance()->setOption('includeLineNumbers', false);
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         Zend_Wildfire_Channel_HttpHeaders::destroyInstance();
         Zend_Wildfire_Plugin_FirePhp::destroyInstance();
