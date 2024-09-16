@@ -1,5 +1,5 @@
 {
-    "name": "diablomedia/zendframework1-log-writer-firebug",
+    "name": "fragotesac/zf1-log-writer-firebug",
     "description": "Zend Framework 1 Log_Writer_Firebug component",
     "type": "library",
     "keywords": [
